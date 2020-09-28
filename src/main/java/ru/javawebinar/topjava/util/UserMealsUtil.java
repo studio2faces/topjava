@@ -22,10 +22,10 @@ public class UserMealsUtil {
                 new UserMeal(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410)
         );
 
-       /* List<UserMealWithExcess> mealsTo = filteredByCycles(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000);
-        mealsTo.forEach(System.out::println);*/
+        List<UserMealWithExcess> mealsTo = filteredByCycles(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000);
+        mealsTo.forEach(System.out::println);
 
-        System.out.println(filteredByStreams(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000));
+       // System.out.println(filteredByStreams(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000));
     }
 
     public static List<UserMealWithExcess> filteredByCycles(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
@@ -45,9 +45,9 @@ public class UserMealsUtil {
             if ((meal.getTime().equals(startTime) && meal.getTime().isBefore(endTime)) || (meal.getTime().isAfter(startTime) && meal.getTime().isBefore(endTime))) {
                 int kcalEaten = dailyCalories.get(meal.getDate());
                 if (kcalEaten > caloriesPerDay) {
-                    userMealWithExcessList.add(new UserMealWithExcess(meal.getDateTime(), meal.getDescription(), meal.getCalories(), false));
-                } else {
                     userMealWithExcessList.add(new UserMealWithExcess(meal.getDateTime(), meal.getDescription(), meal.getCalories(), true));
+                } else {
+                    userMealWithExcessList.add(new UserMealWithExcess(meal.getDateTime(), meal.getDescription(), meal.getCalories(), false));
                 }
             }
         }
@@ -69,15 +69,22 @@ public class UserMealsUtil {
                 .collect(Collectors.toList());
 
         //а как с помощью стрима создать объекты другой модели на основе UserMeal не догадалась пока
-        List<UserMealWithExcess> userMealWithExcessList = new ArrayList<>();
+       /* List<UserMealWithExcess> userMealWithExcessList = new ArrayList<>();
         for (UserMeal meal : mealsBetweenStartAndEnd) {
             int kcalEaten = dailyCalories.get(meal.getDate());
             if (kcalEaten > caloriesPerDay) {
                 userMealWithExcessList.add(new UserMealWithExcess(meal.getDateTime(), meal.getDescription(), meal.getCalories(), false));
             } else
                 userMealWithExcessList.add(new UserMealWithExcess(meal.getDateTime(), meal.getDescription(), meal.getCalories(), true));
-        }
+        }*/
 
-        return userMealWithExcessList;
+        //вроде разобралась
+        List<UserMealWithExcess> userMealWithExcessList1 = mealsBetweenStartAndEnd.stream()
+                .map(meal -> new UserMealWithExcess(meal.getDateTime(), meal.getDescription(), meal.getCalories(),
+                        dailyCalories.get(meal.getDate()) > caloriesPerDay))
+                .collect(Collectors.toList());
+
+
+        return userMealWithExcessList1;
     }
 }
