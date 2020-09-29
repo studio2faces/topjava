@@ -25,7 +25,7 @@ public class UserMealsUtil {
         List<UserMealWithExcess> mealsTo = filteredByCycles(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000);
         mealsTo.forEach(System.out::println);
 
-       // System.out.println(filteredByStreams(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000));
+        System.out.println(filteredByStreams(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000));
     }
 
     public static List<UserMealWithExcess> filteredByCycles(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
@@ -42,7 +42,8 @@ public class UserMealsUtil {
         }
 
         for (UserMeal meal : meals) {
-            if ((meal.getTime().equals(startTime) && meal.getTime().isBefore(endTime)) || (meal.getTime().isAfter(startTime) && meal.getTime().isBefore(endTime))) {
+            if (isSatisfiesTheTimeCondition(meal.getTime(), startTime, endTime)) {
+
                 int kcalEaten = dailyCalories.get(meal.getDate());
                 if (kcalEaten > caloriesPerDay) {
                     userMealWithExcessList.add(new UserMealWithExcess(meal.getDateTime(), meal.getDescription(), meal.getCalories(), true));
@@ -56,35 +57,21 @@ public class UserMealsUtil {
 
     public static List<UserMealWithExcess> filteredByStreams(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
         // TODO Implement by streams
-        //положила в карту количество съеденых ккал в день
+
         Map<LocalDate, Integer> dailyCalories = meals.stream()
                 .collect(Collectors.toMap(
                         UserMeal::getDate,
                         UserMeal::getCalories, Integer::sum)
                 );
 
-        //отсортировала по промежутку
-        List<UserMeal> mealsBetweenStartAndEnd = meals.stream()
-                .filter(userMeal -> userMeal.getTime().equals(startTime) || userMeal.getTime().isBefore(endTime) && userMeal.getTime().isAfter(startTime))
+        return meals.stream()
+                .filter(userMeal -> isSatisfiesTheTimeCondition(userMeal.getTime(), startTime, endTime))
+                .map(userMeal -> new UserMealWithExcess(userMeal.getDateTime(), userMeal.getDescription(), userMeal.getCalories(),
+                        dailyCalories.get(userMeal.getDate()) > caloriesPerDay))
                 .collect(Collectors.toList());
+    }
 
-        //а как с помощью стрима создать объекты другой модели на основе UserMeal не догадалась пока
-       /* List<UserMealWithExcess> userMealWithExcessList = new ArrayList<>();
-        for (UserMeal meal : mealsBetweenStartAndEnd) {
-            int kcalEaten = dailyCalories.get(meal.getDate());
-            if (kcalEaten > caloriesPerDay) {
-                userMealWithExcessList.add(new UserMealWithExcess(meal.getDateTime(), meal.getDescription(), meal.getCalories(), false));
-            } else
-                userMealWithExcessList.add(new UserMealWithExcess(meal.getDateTime(), meal.getDescription(), meal.getCalories(), true));
-        }*/
-
-        //вроде разобралась
-        List<UserMealWithExcess> userMealWithExcessList1 = mealsBetweenStartAndEnd.stream()
-                .map(meal -> new UserMealWithExcess(meal.getDateTime(), meal.getDescription(), meal.getCalories(),
-                        dailyCalories.get(meal.getDate()) > caloriesPerDay))
-                .collect(Collectors.toList());
-
-
-        return userMealWithExcessList1;
+    public static boolean isSatisfiesTheTimeCondition(LocalTime mealsTime, LocalTime startTime, LocalTime endTime) {
+        return mealsTime.equals(startTime) || mealsTime.isAfter(startTime) && mealsTime.isBefore(endTime);
     }
 }
