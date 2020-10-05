@@ -49,6 +49,7 @@ public class MealDAOImplCollection implements MealDAO {
 
         if (current != null) {
             safeMeals.remove(current);
+            meal.setId(id);
             safeMeals.add(meal);
         } else {
             throw new NullPointerException("Meal doesn't exist.");

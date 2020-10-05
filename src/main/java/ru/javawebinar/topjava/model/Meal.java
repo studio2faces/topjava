@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Meal {
     private static final AtomicInteger count = new AtomicInteger();
 
-    private final int id;
+    private int id;
     private final LocalDateTime dateTime;
     private final String description;
     private final int calories;
@@ -32,7 +32,6 @@ public class Meal {
         return calories;
     }
 
-
     public LocalDate getDate() {
         return dateTime.toLocalDate();
     }
@@ -44,6 +43,11 @@ public class Meal {
     public int getId() {
         return id;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
 
     @Override
     public String toString() {

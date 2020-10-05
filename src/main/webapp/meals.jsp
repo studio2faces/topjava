@@ -19,14 +19,46 @@
 <p></p>
 
 <style>
+
+    body {
+        font-family: Tahoma;
+    }
+
     table {
         width: 700px;
         border-collapse: collapse;
+        font-size: 14px;
     }
 
-   table td, table th {
-        border: 1px solid #000;
+    table td, table th {
+        border: 1px solid #bdbcbc;
+        padding: 5px;
+        vertical-align: middle;
+    }
+
+    form {
+        padding: 0;
+        margin: 0;
+    }
+
+    td button {
+        margin: 0 auto;
+        display: block;
+        font-size: 10px;
+        text-transform: uppercase;
+        font-weight: 400;
+
+        border-radius: 3px;
+
+        background-color: #a1c99c;
         padding: 7px;
+        color: white;
+        border: none;
+    }
+
+    .button-del {
+        background-color: #bf4358;
+        border: none;
     }
 </style>
 
@@ -45,8 +77,24 @@
             <td><c:out value="${meal.dateTime}"/></td>
             <td><c:out value="${meal.description}"/></td>
             <td><c:out value="${meal.calories}"/></td>
-            <td><a href="index.html">Update</a></td>
-            <td><a href="index.html">Delete</a></td>
+            <td>
+                <form method="post" action="/topjava/meals">
+                    <input type="hidden" name="method" value="update">
+                    <input type="hidden" name="id" value=<c:out value="${meal.id}"/>>
+                    <button type="submit" name="submit_param" value="submit_value">
+                        Update
+                    </button>
+                </form>
+            </td>
+            <td>
+                <form method="post" action="/topjava/meals">
+                    <input type="hidden" name="method" value="delete">
+                    <input type="hidden" name="id" value=<c:out value="${meal.id}"/>>
+                    <button class="button-del" type="submit" name="submit_param" value="submit_value">
+                        Delete
+                    </button>
+                </form>
+            </td>
         </tr>
     </c:forEach>
 </table>
