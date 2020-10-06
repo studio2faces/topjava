@@ -21,28 +21,29 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class MealServlet extends HttpServlet {
     private static final Logger log = getLogger(MealServlet.class);
+    private static final String MEALSERVLET_URL = "/topjava/meals";
 
     MealDAOImplCollection handler = new MealDAOImplCollection();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Meal> meals = handler.read();
-
-        log.debug("Forward to meals list.");
         request.setCharacterEncoding("UTF-8");
+
+        List<Meal> meals = handler.read();
         List<MealTo> mealsTo = MealsUtil.filteredByStreams(meals, LocalTime.MIN, LocalTime.MAX, 2000);
-        List sortedById = mealsTo.stream()
+        List<MealTo> sortedById = mealsTo.stream()
                 .sorted(Comparator.comparingInt(MealTo::getId))
                 .collect(Collectors.toList());
         request.setAttribute("mealsToList", sortedById);
 
+        log.debug("Forward to meals list.");
         request.getRequestDispatcher("meals.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
         String method = request.getParameter("method");
-
 
         if (method.equals("create")) {
             log.debug("POST - Create.");
@@ -50,7 +51,7 @@ public class MealServlet extends HttpServlet {
             String localDateTime = request.getParameter("date");
             String description = request.getParameter("description");
             int calories = Integer.parseInt(request.getParameter("calories"));
-            System.out.println(localDateTime + " " + description + " " + calories);
+            log.debug("Meal for adding: {} - {} - {} kcal.", localDateTime, description, calories);
 
             Meal meal = new Meal(LocalDateTime.parse(localDateTime), description, calories);
 
@@ -58,40 +59,42 @@ public class MealServlet extends HttpServlet {
                 handler.create(meal);
                 log.debug("Meal {} was added with id {}.", meal.getDescription(), meal.getId());
             } catch (Exception e) {
-                log.error("Meal {} wasn't added.", meal.getDescription());
-                e.printStackTrace();
+                log.error("Meal {} wasn't added.", meal.getDescription(), e);
             }
-            response.sendRedirect("/topjava/meals");
+            response.sendRedirect(MEALSERVLET_URL);
+
         } else if (method.equals("update")) {
             log.debug("POST - Update");
-
-
             request.getRequestDispatcher("edit.jsp").forward(request, response);
 
-        } else if (method.equals("update2")) {
+        } else if (method.equals("update-to-edit")) {
             int id = Integer.parseInt(request.getParameter("id"));
+
             String localDateTime = request.getParameter("date");
             String description = request.getParameter("description");
             int calories = Integer.parseInt(request.getParameter("calories"));
+
             Meal meal = new Meal(LocalDateTime.parse(localDateTime), description, calories);
+
             try {
                 handler.update(meal, id);
-                log.debug("Meal with id {} is updated.", id);
-                response.sendRedirect("/topjava/meals");
+                log.debug("Meal with ID{} is updated.", id);
+                response.sendRedirect(MEALSERVLET_URL);
             } catch (Exception e) {
-                e.printStackTrace();
+                log.error("Meal with ID{} is not updated.", id, e);
             }
+
         } else if (method.equals("delete")) {
             log.debug("POST - Delete.");
             int id = Integer.parseInt(request.getParameter("id"));
 
             try {
                 handler.delete(id);
-                log.debug("Meal with id {} is deleted.", id);
+                log.debug("Meal with ID{} is deleted.", id);
             } catch (Exception e) {
-                e.printStackTrace();
+                log.error("Meal ID{} wasn't deleted.", id, e);
             }
-            response.sendRedirect("/topjava/meals");
+            response.sendRedirect(MEALSERVLET_URL);
         }
     }
 

@@ -18,6 +18,36 @@
 <p><a href="/topjava/meals">List of meals</a></p>
 <p></p>
 
+<style>
+    body {
+        font-family: Tahoma;
+    }
+
+    input {
+        height: 35px;
+        padding: 10px;
+    }
+
+    button, .button {
+
+        font-size: 10px;
+        text-transform: uppercase;
+        font-weight: 400;
+
+        border-radius: 3px;
+
+        background-color: #a1c99c;
+        padding: 7px;
+        color: white;
+        border: none;
+    }
+
+    .button-can, .button {
+        background-color: #bf4358;
+        text-decoration: none;
+    }
+</style>
+
 <p>
     Edit meal - ID <c:out value="${param.id}" default="(new meal)"/>
 </p>
@@ -27,17 +57,17 @@
         <input type="hidden" name="method" value="create">
     </c:if>
     <c:if test="${param.id != null}">
-        <input type="hidden" name="method" value="update2">
+        <input type="hidden" name="method" value="update-to-edit">
         <input type="hidden" name="id" value="${param.id}">
     </c:if>
 
-    <p>DateTime: <input type="datetime-local" name="date"></p>
-    <p>Description: <input type="text" name="description"></p>
-    <p>Calories: <input type="text" name="calories"></p>
-    <p><input type="submit" value="Save">
-        <button>Cancel</button>
+    <p>DateTime: <input type="datetime-local" name="date" value="${param.dateTime}"></p>
+    <p>Description: <input type="text" name="description" value="${param.description}"></p>
+    <p>Calories: <input type="text" name="calories" value="${param.calories}"></p>
+    <p>
+        <button type="submit">Save</button>
+        <a href="/topjava/meals" class="button">Cancel</a>
     </p>
 </form>
-
 </body>
 </html>

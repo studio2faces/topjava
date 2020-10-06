@@ -81,6 +81,9 @@
                 <form method="post" action="/topjava/meals">
                     <input type="hidden" name="method" value="update">
                     <input type="hidden" name="id" value=<c:out value="${meal.id}"/>>
+                    <input type="hidden" name="date" value=<c:out value="${meal.dateTime}"/>>
+                    <input type="hidden" name="description" value=<c:out value="${meal.description}"/>>
+                    <input type="hidden" name="calories" value=<c:out value="${meal.calories}"/>>
                     <button type="submit" name="submit_param" value="submit_value">
                         Update
                     </button>

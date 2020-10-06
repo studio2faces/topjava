@@ -33,6 +33,7 @@ public class MealDAOImplCollection implements MealDAO {
     @Override
     public void create(Meal meal) {
         safeMeals.add(meal);
+        log.debug("{} is added.", meal);
     }
 
     @Override
@@ -47,13 +48,15 @@ public class MealDAOImplCollection implements MealDAO {
                 .findFirst()
                 .orElse(null);
 
-        if (current != null) {
-            safeMeals.remove(current);
-            meal.setId(id);
-            safeMeals.add(meal);
-        } else {
+        if (current == null) {
+            log.debug("{} doesn't exist.", meal);
             throw new NullPointerException("Meal doesn't exist.");
         }
+
+        safeMeals.remove(current);
+        meal.setId(id);
+        safeMeals.add(meal);
+        log.debug("{} is updated.", meal);
     }
 
     @Override
@@ -61,6 +64,6 @@ public class MealDAOImplCollection implements MealDAO {
         safeMeals.stream()
                 .filter(meal1 -> meal1.getId() == id)
                 .findFirst().ifPresent(safeMeals::remove);
-
+        log.debug("Meal id{} is deleted", id);
     }
 }
