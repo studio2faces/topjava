@@ -1,14 +1,9 @@
 package ru.javawebinar.topjava.util;
 
 import java.time.format.DateTimeFormatter;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Util {
 
-   public static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-    private static final AtomicInteger count = new AtomicInteger();
+    public static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-    public static int increment(){
-        return count.incrementAndGet();
-    }
 }

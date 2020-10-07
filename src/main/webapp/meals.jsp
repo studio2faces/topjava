@@ -15,7 +15,7 @@
 <h3><a href="index.html">Home</a></h3>
 <hr>
 <h2>Meals</h2>
-<p><a href="/topjava/meals/add">Add Meal</a></p>
+<p><a href="${pageContext.request.contextPath}/meals/add">Add Meal</a></p>
 <p></p>
 
 <style>
@@ -76,20 +76,19 @@
             <td>${meal.description}</td>
             <td>${meal.calories}</td>
             <td>
-                <form method="post" action="/topjava/meals">
+                <form method="get" action="${pageContext.request.contextPath}/meals">
                     <input type="hidden" name="method" value="update">
                     <input type="hidden" name="id" value=${meal.id}>
-
-                    <button type="submit" name="submit_param" value="submit_value">
+                    <button type="submit">
                         Update
                     </button>
                 </form>
             </td>
             <td>
-                <form method="post" action="/topjava/meals">
+                <form method="post" action="${pageContext.request.contextPath}/meals">
                     <input type="hidden" name="method" value="delete">
                     <input type="hidden" name="id" value=${meal.id}>
-                    <button class="button-del" type="submit" name="submit_param" value="submit_value">
+                    <button class="button-del" type="submit">
                         Delete
                     </button>
                 </form>

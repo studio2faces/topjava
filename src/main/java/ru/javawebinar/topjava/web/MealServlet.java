@@ -30,6 +30,18 @@ public class MealServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
 
+        if (request.getParameterMap().containsKey("id")) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            Meal existing = mealDao.getById(id);
+
+            request.setAttribute("dateTime", existing.getDateTime());
+            request.setAttribute("description", existing.getDescription());
+            request.setAttribute("calories", existing.getCalories());
+
+            log.debug("POST - Update. Forward to edit.jsp");
+            request.getRequestDispatcher("edit.jsp").forward(request, response);
+        }
+
         List<Meal> meals = mealDao.getAll();
         List<MealTo> mealsTo = MealsUtil.filteredByStreams(meals, LocalTime.MIN, LocalTime.MAX, 2000);
 
@@ -53,7 +65,7 @@ public class MealServlet extends HttpServlet {
                 int calories = Integer.parseInt(request.getParameter("calories"));
                 log.debug("Meal for adding: {} - {} - {} kcal.", localDateTime, description, calories);
 
-                Meal meal = new Meal(Util.increment(), LocalDateTime.parse(localDateTime), description, calories);
+                Meal meal = new Meal(LocalDateTime.parse(localDateTime), description, calories);
 
                 mealDao.create(meal);
                 log.debug("Meal {} was added with id {}.", meal.getDescription(), meal.getId());
@@ -64,30 +76,20 @@ public class MealServlet extends HttpServlet {
             case "update": {
                 int id = Integer.parseInt(request.getParameter("id"));
 
-                if (request.getParameterMap().containsKey("dateTime")) {
-                    log.debug("POST - Update. Getting updated parameters.");
 
-                    String localDateTime = request.getParameter("dateTime");
-                    String description = request.getParameter("description");
-                    int calories = Integer.parseInt(request.getParameter("calories"));
+                log.debug("POST - Update. Getting updated parameters.");
 
-                    Meal meal = new Meal(id, LocalDateTime.parse(localDateTime), description, calories);
+                String localDateTime = request.getParameter("dateTime");
+                String description = request.getParameter("description");
+                int calories = Integer.parseInt(request.getParameter("calories"));
 
-                    mealDao.update(meal);
-                    log.debug("Meal with ID{} is updated.", id);
-                    response.sendRedirect(MEALSERVLET_URL);
+                Meal meal = new Meal(id, LocalDateTime.parse(localDateTime), description, calories);
 
-                    break;
-                }
-                Meal existing = mealDao.getById(id);
-
-                request.setAttribute("dateTime", existing.getDateTime());
-                request.setAttribute("description", existing.getDescription());
-                request.setAttribute("calories", existing.getCalories());
-
-                log.debug("POST - Update. Forward to edit.jsp");
-                request.getRequestDispatcher("edit.jsp").forward(request, response);
+                mealDao.update(meal);
+                log.debug("Meal with ID{} is updated.", id);
+                response.sendRedirect(MEALSERVLET_URL);
                 break;
+
             }
             case "delete": {
                 log.debug("POST - Delete.");

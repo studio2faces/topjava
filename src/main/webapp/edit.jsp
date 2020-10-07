@@ -16,7 +16,7 @@
 <h3><a href="index.html">Home</a></h3>
 <hr>
 <h2>Create or edit meal</h2>
-<p><a href="/topjava/meals">List of meals</a></p>
+<p><a href="${pageContext.request.contextPath}/meals">List of meals</a></p>
 <p></p>
 
 <style>
@@ -53,7 +53,7 @@
     Edit meal - ID <c:out value="${param.id}" default="(new meal)"/>
 </p>
 
-<form action="/topjava/meals" method="post">
+<form action="${pageContext.request.contextPath}/meals" method="post">
     <c:if test="${param.id == null}">
         <input type="hidden" name="method" value="create">
     </c:if>
@@ -69,7 +69,7 @@
     <p>Calories: <input type="text" name="calories" value="${requestScope.calories}" required pattern="^[ 0-9]+$"></p>
     <p>
         <button type="submit">Save</button>
-        <a href="/topjava/meals" class="button">Cancel</a>
+        <a href="${pageContext.request.contextPath}/meals" class="button">Cancel</a>
     </p>
 </form>
 </body>

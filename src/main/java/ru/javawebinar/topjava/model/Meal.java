@@ -12,6 +12,12 @@ public class Meal {
     private final String description;
     private final int calories;
 
+    public Meal(LocalDateTime dateTime, String description, int calories) {
+        this.dateTime = dateTime;
+        this.description = description;
+        this.calories = calories;
+    }
+
     public Meal(int id, LocalDateTime dateTime, String description, int calories) {
         this.id = id;
         this.dateTime = dateTime;
@@ -55,12 +61,5 @@ public class Meal {
                 ", description='" + description + '\'' +
                 ", calories=" + calories +
                 '}';
-    }
-
-    public static void main(String[] args) {
-        Meal meal = new Meal(1,LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500);
-        System.out.println(meal.getDateTime());
-        String s = meal.getDateTime().toString();
-        System.out.println(s);
     }
 }
