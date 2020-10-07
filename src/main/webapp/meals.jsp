@@ -21,7 +21,7 @@
 <style>
 
     body {
-        font-family: Tahoma;
+        font-family: Tahoma, serif;
     }
 
     table {
@@ -73,17 +73,17 @@
     </tr>
     <c:forEach items="${mealsToList}" var="meal">
         <tr style="color: ${meal.excess ? "red" : "green"}">
-          <%--  <td><c:out value="${meal.id}"/></td>--%>
-            <td><c:out value="${meal.dateTime}"/></td>
-            <td><c:out value="${meal.description}"/></td>
-            <td><c:out value="${meal.calories}"/></td>
+                <%--  <td><c:out value="${meal.id}"/></td>--%>
+            <td>${meal.dateTime}</td>
+            <td>${meal.description}</td>
+            <td>${meal.calories}</td>
             <td>
                 <form method="post" action="/topjava/meals">
                     <input type="hidden" name="method" value="update">
-                    <input type="hidden" name="id" value=<c:out value="${meal.id}"/>>
-                    <input type="hidden" name="date" value=<c:out value="${meal.dateTime}"/>>
-                    <input type="hidden" name="description" value=<c:out value="${meal.description}"/>>
-                    <input type="hidden" name="calories" value=<c:out value="${meal.calories}"/>>
+                    <input type="hidden" name="id" value=${meal.id}>
+                        <%--<input type="hidden" name="date" value=<c:out value="${meal.dateTime}"/>>
+                        <input type="hidden" name="description" value=<c:out value="${meal.description}"/>>
+                        <input type="hidden" name="calories" value=<c:out value="${meal.calories}"/>>--%>
                     <button type="submit" name="submit_param" value="submit_value">
                         Update
                     </button>
@@ -92,7 +92,7 @@
             <td>
                 <form method="post" action="/topjava/meals">
                     <input type="hidden" name="method" value="delete">
-                    <input type="hidden" name="id" value=<c:out value="${meal.id}"/>>
+                    <input type="hidden" name="id" value=${meal.id}>
                     <button class="button-del" type="submit" name="submit_param" value="submit_value">
                         Delete
                     </button>

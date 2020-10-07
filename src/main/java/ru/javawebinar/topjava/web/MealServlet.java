@@ -13,6 +13,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -47,58 +50,61 @@ public class MealServlet extends HttpServlet {
             case "create": {
                 log.debug("POST - Create.");
 
-                String localDateTime = request.getParameter("date");
+                String localDateTime = request.getParameter("dateTime");
                 String description = request.getParameter("description");
                 int calories = Integer.parseInt(request.getParameter("calories"));
                 log.debug("Meal for adding: {} - {} - {} kcal.", localDateTime, description, calories);
 
                 Meal meal = new Meal(Util.increment(), LocalDateTime.parse(localDateTime), description, calories);
 
-                try {
-                    mealDao.create(meal);
-                    log.debug("Meal {} was added with id {}.", meal.getDescription(), meal.getId());
-                } catch (Exception e) {
-                    log.error("Meal {} wasn't added.", meal.getDescription(), e);
-                }
+                mealDao.create(meal);
+                log.debug("Meal {} was added with id {}.", meal.getDescription(), meal.getId());
+
                 response.sendRedirect(MEALSERVLET_URL);
                 break;
             }
-            case "update":
-                log.debug("POST - Update");
-                request.getRequestDispatcher("edit.jsp").forward(request, response);
-                break;
-            case "update-to-edit": {
+            case "update": {
                 int id = Integer.parseInt(request.getParameter("id"));
 
-                String localDateTime = request.getParameter("date");
-                String description = request.getParameter("description");
-                int calories = Integer.parseInt(request.getParameter("calories"));
+                if (request.getParameterMap().containsKey("dateTime")) {
+                    log.debug("POST - Update. Getting updated parameters.");
 
-                Meal meal = new Meal(id, LocalDateTime.parse(localDateTime), description, calories);
+                    String localDateTime = request.getParameter("dateTime");
+                    String description = request.getParameter("description");
+                    int calories = Integer.parseInt(request.getParameter("calories"));
 
-                try {
+                    Meal meal = new Meal(id, LocalDateTime.parse(localDateTime), description, calories);
+
                     mealDao.update(meal);
                     log.debug("Meal with ID{} is updated.", id);
                     response.sendRedirect(MEALSERVLET_URL);
-                } catch (Exception e) {
-                    log.error("Meal with ID{} is not updated.", id, e);
+
+                    break;
                 }
+                Meal existing = mealDao.getById(id);
+
+
+               /* DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+                Date dateFormatted = (Date)formatter.parse(new Date().toString());*/
+
+                request.setAttribute("dateTime", existing.getDateTime());
+                request.setAttribute("description", existing.getDescription());
+                request.setAttribute("calories", existing.getCalories());
+
+                log.debug("POST - Update. Forward to edit.jsp");
+                request.getRequestDispatcher("edit.jsp").forward(request, response);
                 break;
             }
             case "delete": {
                 log.debug("POST - Delete.");
-                int id = Integer.parseInt(request.getParameter("id"));
+                int idToDel = Integer.parseInt(request.getParameter("id"));
 
-                try {
-                    mealDao.delete(id);
-                    log.debug("Meal with ID{} is deleted.", id);
-                } catch (Exception e) {
-                    log.error("Meal ID{} wasn't deleted.", id, e);
-                }
+                mealDao.delete(idToDel);
+                log.debug("Meal with ID{} is deleted.", idToDel);
+
                 response.sendRedirect(MEALSERVLET_URL);
                 break;
             }
         }
     }
-
 }

@@ -5,6 +5,7 @@ import ru.javawebinar.topjava.util.Util;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Month;
 
 public class Meal {
 
@@ -56,5 +57,12 @@ public class Meal {
                 ", description='" + description + '\'' +
                 ", calories=" + calories +
                 '}';
+    }
+
+    public static void main(String[] args) {
+        Meal meal = new Meal(1,LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500);
+        System.out.println(meal.getDateTime());
+        String s = meal.getDateTime().toString();
+        System.out.println(s);
     }
 }

@@ -36,7 +36,6 @@ public class MealDaoCollection implements MealDao {
     public Meal create(Meal meal) {
         safeMap.put(meal.getId(), meal);
         log.debug("{} is added.", meal);
-
         return meal;
     }
 
@@ -52,15 +51,11 @@ public class MealDaoCollection implements MealDao {
 
     @Override
     public Meal update(Meal meal) {
-        Meal current = getById(meal.getId());
-
-        if (current == null) {
+        if (getById(meal.getId()) == null) {
             log.debug("{} doesn't exist.", meal);
         }
-
         safeMap.put(meal.getId(), meal);
         log.debug("{} is updated.", meal);
-
         return meal;
     }
 
