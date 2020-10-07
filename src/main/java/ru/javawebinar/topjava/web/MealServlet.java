@@ -74,7 +74,7 @@ public class MealServlet extends HttpServlet {
                 String description = request.getParameter("description");
                 int calories = Integer.parseInt(request.getParameter("calories"));
 
-                Meal meal = new Meal(Util.increment(), LocalDateTime.parse(localDateTime), description, calories);
+                Meal meal = new Meal(id, LocalDateTime.parse(localDateTime), description, calories);
 
                 try {
                     mealDao.update(meal);
