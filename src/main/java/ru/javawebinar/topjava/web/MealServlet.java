@@ -13,9 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Date;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -24,7 +22,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class MealServlet extends HttpServlet {
     private static final Logger log = getLogger(MealServlet.class);
-    private static final String MEALSERVLET_URL = "/topjava/meals";
+    private static final String MEALSERVLET_URL = "meals";
 
     MealDao mealDao = new MealDaoCollection();
 
@@ -82,10 +80,6 @@ public class MealServlet extends HttpServlet {
                     break;
                 }
                 Meal existing = mealDao.getById(id);
-
-
-               /* DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm");
-                Date dateFormatted = (Date)formatter.parse(new Date().toString());*/
 
                 request.setAttribute("dateTime", existing.getDateTime());
                 request.setAttribute("description", existing.getDescription());

@@ -62,10 +62,6 @@
         <input type="hidden" name="id" value="${param.id}">
     </c:if>
 
-<%--    <p>
-        &lt;%&ndash;<fmt:formatDate value="${requestScope.date}" var="date-format" pattern="yyyy-MM-ddTHH:mm"/>&ndash;%&gt;
-        DateTime: <input type="datetime-local" name="dateTime" value="2017-06-01T08:30" required>
-    </p>--%>
     <p>
         DateTime: <input type="datetime-local" name="dateTime" value="${requestScope.dateTime}" required>
     </p>

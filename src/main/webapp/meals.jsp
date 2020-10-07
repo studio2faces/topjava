@@ -64,7 +64,6 @@
 
 <table>
     <tr>
-        <%--<th></th>--%>
         <th>Date</th>
         <th>Description</th>
         <th>Calories</th>
@@ -73,7 +72,6 @@
     </tr>
     <c:forEach items="${mealsToList}" var="meal">
         <tr style="color: ${meal.excess ? "red" : "green"}">
-                <%--  <td><c:out value="${meal.id}"/></td>--%>
             <td>${meal.dateTime}</td>
             <td>${meal.description}</td>
             <td>${meal.calories}</td>
@@ -81,9 +79,7 @@
                 <form method="post" action="/topjava/meals">
                     <input type="hidden" name="method" value="update">
                     <input type="hidden" name="id" value=${meal.id}>
-                        <%--<input type="hidden" name="date" value=<c:out value="${meal.dateTime}"/>>
-                        <input type="hidden" name="description" value=<c:out value="${meal.description}"/>>
-                        <input type="hidden" name="calories" value=<c:out value="${meal.calories}"/>>--%>
+
                     <button type="submit" name="submit_param" value="submit_value">
                         Update
                     </button>
