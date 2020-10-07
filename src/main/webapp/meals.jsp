@@ -15,7 +15,7 @@
 <h3><a href="index.html">Home</a></h3>
 <hr>
 <h2>Meals</h2>
-<p><a href="edit.jsp">Add Meal</a></p>
+<p><a href="/topjava/meals/add">Add Meal</a></p>
 <p></p>
 
 <style>
@@ -64,7 +64,7 @@
 
 <table>
     <tr>
-        <th></th>
+        <%--<th></th>--%>
         <th>Date</th>
         <th>Description</th>
         <th>Calories</th>
@@ -73,7 +73,7 @@
     </tr>
     <c:forEach items="${mealsToList}" var="meal">
         <tr style="color: ${meal.excess ? "red" : "green"}">
-            <td><c:out value="${meal.id}"/></td>
+          <%--  <td><c:out value="${meal.id}"/></td>--%>
             <td><c:out value="${meal.dateTime}"/></td>
             <td><c:out value="${meal.description}"/></td>
             <td><c:out value="${meal.calories}"/></td>

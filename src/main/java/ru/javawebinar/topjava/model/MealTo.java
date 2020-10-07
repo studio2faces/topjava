@@ -24,7 +24,7 @@ public class MealTo {
     }
 
     public String getDateTime() {
-        return dateTime.format(Util.getDateTimeFormatter());
+        return dateTime.format(Util.dateTimeFormatter);
     }
 
     public String getDescription() {

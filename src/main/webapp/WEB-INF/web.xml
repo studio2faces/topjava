@@ -26,4 +26,13 @@
         <url-pattern>/meals</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>add</servlet-name>
+        <jsp-file>/edit.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>add</servlet-name>
+        <url-pattern>/meals/add</url-pattern>
+    </servlet-mapping>
+
 </web-app>

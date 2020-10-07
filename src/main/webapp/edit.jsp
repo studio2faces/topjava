@@ -61,9 +61,9 @@
         <input type="hidden" name="id" value="${param.id}">
     </c:if>
 
-    <p>DateTime: <input type="datetime-local" name="date" value="${param.dateTime}"></p>
-    <p>Description: <input type="text" name="description" value="${param.description}"></p>
-    <p>Calories: <input type="text" name="calories" value="${param.calories}"></p>
+    <p>DateTime: <input type="datetime-local" name="date" value="${param.dateTime}" required></p>
+    <p>Description: <input type="text" name="description" value="${param.description}" required></p>
+    <p>Calories: <input type="text" name="calories" value="${param.calories}" required pattern="^[ 0-9]+$"></p>
     <p>
         <button type="submit">Save</button>
         <a href="/topjava/meals" class="button">Cancel</a>
