@@ -2,8 +2,6 @@ package ru.javawebinar.topjava.model;
 
 import java.time.LocalDateTime;
 
-import static ru.javawebinar.topjava.util.TimeUtil.dateTimeFormatter;
-
 public class MealTo {
     private final int id;
     private final LocalDateTime dateTime;
@@ -23,8 +21,8 @@ public class MealTo {
         return id;
     }
 
-    public String getDateTime() {
-        return dateTime.format(dateTimeFormatter);
+    public LocalDateTime getDateTime() {
+        return dateTime;
     }
 
     public String getDescription() {
