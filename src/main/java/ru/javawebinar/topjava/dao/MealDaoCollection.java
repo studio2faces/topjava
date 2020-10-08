@@ -2,7 +2,6 @@ package ru.javawebinar.topjava.dao;
 
 import org.slf4j.Logger;
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.util.Util;
 
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -17,9 +16,9 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class MealDaoCollection implements MealDao {
     private static final Logger log = getLogger(MealDaoCollection.class);
 
-    public static final AtomicInteger count = new AtomicInteger();
+    public final AtomicInteger count = new AtomicInteger();
 
-    private static final Map<Integer, Meal> safeMap = new ConcurrentHashMap<Integer, Meal>();
+    private final Map<Integer, Meal> safeMap = new ConcurrentHashMap<>();
 
     {
         create(new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500));
@@ -51,9 +50,12 @@ public class MealDaoCollection implements MealDao {
 
     @Override
     public Meal update(Meal meal) {
-        safeMap.put(meal.getId(), meal);
-        log.debug("Meal id {} is updated.", meal.getId());
-        return meal;
+        if (getById(meal.getId()) != null) {
+            safeMap.put(meal.getId(), meal);
+            log.debug("Meal id {} is updated.", meal.getId());
+            return meal;
+        }
+        return null;
     }
 
     @Override
@@ -62,7 +64,7 @@ public class MealDaoCollection implements MealDao {
         log.debug("Meal id {} is deleted", id);
     }
 
-    private static void generateId(Meal meal) {
-        meal.setId(count.incrementAndGet());
+    private void generateId(Meal meal) {
+        meal.setId(this.count.incrementAndGet());
     }
 }
