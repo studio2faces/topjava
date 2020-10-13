@@ -5,8 +5,10 @@ import org.springframework.stereotype.Service;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.to.MealTo;
+import ru.javawebinar.topjava.util.MealsUtil;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.*;
 
@@ -36,12 +38,25 @@ public class MealService {
         return checkNotFoundWithId(repository.get(id, userId), id);
     }
 
+    public MealTo getTo(int id, int userId, int calories) {
+        Meal meal = get(id, userId);
+        List<Meal> mealsOfThisDay = getAll(userId).stream()
+                .filter(meal1 -> meal1.getDate().equals(meal.getDate()))
+                .collect(Collectors.toList());
+
+        List<MealTo> mealsOfThisDayTo = MealsUtil.getTos(mealsOfThisDay, calories);
+        return mealsOfThisDayTo.stream()
+                .filter(mealTo -> mealTo.getId() == id)
+                .findFirst()
+                .orElse(null);
+    }
+
     public List<Meal> getAll(int userId) {
         return repository.getAll(userId);
     }
 
-    public List<MealTo> getAll() {
-        return null;
+    public List<MealTo> getAllTo(int userId, int calories) {
+        return MealsUtil.getTos(getAll(userId), calories);
     }
 
 
