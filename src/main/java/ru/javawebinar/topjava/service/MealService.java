@@ -38,7 +38,7 @@ public class MealService {
         return checkNotFoundWithId(repository.get(id, userId), id);
     }
 
-    public MealTo getTo(int id, int userId, int calories) {
+   /* public MealTo getTo(int id, int userId, int calories) {
         Meal meal = get(id, userId);
         List<Meal> mealsOfThisDay = getAll(userId).stream()
                 .filter(meal1 -> meal1.getDate().equals(meal.getDate()))
@@ -49,7 +49,7 @@ public class MealService {
                 .filter(mealTo -> mealTo.getId() == id)
                 .findFirst()
                 .orElse(null);
-    }
+    }*/
 
     public List<Meal> getAll(int userId) {
         return repository.getAll(userId);

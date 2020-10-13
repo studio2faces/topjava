@@ -6,8 +6,11 @@ import org.springframework.stereotype.Controller;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.to.MealTo;
+import ru.javawebinar.topjava.util.MealsUtil;
 import ru.javawebinar.topjava.web.SecurityUtil;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -24,15 +27,14 @@ public class MealRestController {
         return service.getAllTo(SecurityUtil.authUserId(), SecurityUtil.authUserCaloriesPerDay());
     }
 
-    //запуталась пока
     //Отдать свою еду, отфильтрованную по startDate, startTime, endDate, endTime
-    public List<MealTo> getAllByDateAndTime() {
-        List<Meal> meals = service.getAll(SecurityUtil.authUserId());
-        return null;
+    public List<MealTo> getAllByDateAndTime(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime) {
+        List<Meal> meals = MealsUtil.getFilteredMeals(service.getAll(SecurityUtil.authUserId()), startDate, endDate);
+        return MealsUtil.getFilteredTos(meals, SecurityUtil.authUserCaloriesPerDay(), startTime, endTime);
     }
 
-    public MealTo get(int id) {
-        return service.getTo(id, SecurityUtil.authUserId(), SecurityUtil.authUserCaloriesPerDay());
+    public Meal get(int id) {
+        return service.get(id, SecurityUtil.authUserId());
     }
 
     public void delete(int id) {
