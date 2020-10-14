@@ -1,7 +1,6 @@
 package ru.javawebinar.topjava.model;
 
 public abstract class AbstractNamedEntity extends AbstractBaseEntity {
-
     protected String name;
 
     protected AbstractNamedEntity(Integer id, String name) {

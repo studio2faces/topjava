@@ -14,6 +14,12 @@
         .excess {
             color: red;
         }
+
+        .filter {
+            width: 800px;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 <body>
@@ -21,6 +27,27 @@
     <h3><a href="index.html">Home</a></h3>
     <hr/>
     <h2>Meals</h2>
+
+    <form action="meals" method="get">
+        <input type="hidden" name="action" value="filter">
+        <table class="filter">
+            <tr>
+                <td>От даты (включая)</td>
+                <td>До даты (включая)</td>
+                <td>От времени (включая)</td>
+                <td>До времени (исключая)</td>
+            </tr>
+            <tr>
+                <td><input type="date" value="" name="fromDate"></td>
+                <td><input type="date" value="" name="toDate"></td>
+                <td><input type="time" value="" name="fromTime"></td>
+                <td><input type="time" value="" name="toTime"></td>
+            </tr>
+        </table>
+        <button type="button"><a href="meals">Cancel</a></button>
+        <button type="submit">Filter table</button>
+    </form>
+
 
     <a href="meals?action=create">Add Meal</a>
     <br><br>

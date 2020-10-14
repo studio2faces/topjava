@@ -24,20 +24,16 @@ public class InMemoryUserRepository implements UserRepository {
     @Override
     public boolean delete(int id) {
         log.info("delete {}", id);
-        //что значит !=null?
         return repository.remove(id) != null;
     }
 
     @Override
     public User save(User user) {
         log.info("save {}", user);
-        if (user.isNew() && getByEmail(user.getEmail()) == null) {
+        if (user.isNew()) {
             user.setId(counter.incrementAndGet());
             repository.put(user.getId(), user);
             return user;
-        }
-        if (user.isNew() && getByEmail(user.getEmail()) != null) {
-            return null;
         }
         return repository.computeIfPresent(user.getId(), (id, oldUser) -> user);
     }
@@ -62,6 +58,6 @@ public class InMemoryUserRepository implements UserRepository {
         return repository.values().stream()
                 .filter(user -> user.getEmail().equals(email))
                 .findFirst()
-                .orElse(null);
+                .get();
     }
 }

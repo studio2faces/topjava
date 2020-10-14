@@ -10,5 +10,19 @@
     <li><a href="users">Users</a></li>
     <li><a href="meals">Meals</a></li>
 </ul>
+
+<form action="meals" method="get">
+
+    <label for="userId">Choose user:</label>
+    <select name="userId" id="userId">
+        <option value="1">user id = 1</option>
+        <option value="2">user id = 2</option>
+    </select>
+    <input type="hidden" name="action" value="setUser">
+
+    <button type="submit">Go to user's meals</button>
+</form>
+
+
 </body>
 </html>
