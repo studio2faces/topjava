@@ -1,7 +1,6 @@
 package ru.javawebinar.topjava.repository.inmemory;
 
 import org.slf4j.Logger;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;

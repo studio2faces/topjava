@@ -13,9 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
@@ -57,12 +55,6 @@ public class MealServlet extends HttpServlet {
         String action = request.getParameter("action");
 
         switch (action == null ? "all" : action) {
-            /*case "setUser":
-                int userId = Integer.parseInt(request.getParameter("userId"));
-                SecurityUtil.setAuthUserId(userId);
-                request.setAttribute("meals", mealRestController.getAll());
-                request.getRequestDispatcher("/meals.jsp").forward(request, response);
-                break;*/
             case "delete":
                 int id = getId(request);
                 log.info("Delete {}", id);
@@ -85,11 +77,6 @@ public class MealServlet extends HttpServlet {
                 String toDate = request.getParameter("toDate");
                 String fromTime = request.getParameter("fromTime");
                 String toTime = request.getParameter("toTime");
-
-                /*LocalDate fromLocalDate = fromDate.isEmpty() ? LocalDate.MIN : LocalDate.parse(fromDate);
-                LocalDate toLocalDate = toDate.isEmpty() ? LocalDate.MAX : LocalDate.parse(toDate);
-                LocalTime fromLocalTime = fromTime.isEmpty() ? LocalTime.MIN : LocalTime.parse(fromTime);
-                LocalTime toLocalTime = toTime.isEmpty() ? LocalTime.MAX : LocalTime.parse(toTime);*/
 
                 request.setAttribute("meals", mealRestController.getAllByDateAndTime(fromDate, toDate, fromTime, toTime));
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
