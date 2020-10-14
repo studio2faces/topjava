@@ -22,16 +22,13 @@ import java.util.Objects;
 public class MealServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(MealServlet.class);
 
-    // private MealRepository repository;
-
+    ConfigurableApplicationContext appCtx;
     private MealRestController mealRestController;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-        super.init(config);
-        try (ConfigurableApplicationContext appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml")) {
-            mealRestController = appCtx.getBean(MealRestController.class);
-        }
+        appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml");
+        mealRestController = appCtx.getBean(MealRestController.class);
     }
 
     @Override
@@ -60,12 +57,12 @@ public class MealServlet extends HttpServlet {
         String action = request.getParameter("action");
 
         switch (action == null ? "all" : action) {
-            case "setUser":
+            /*case "setUser":
                 int userId = Integer.parseInt(request.getParameter("userId"));
                 SecurityUtil.setAuthUserId(userId);
                 request.setAttribute("meals", mealRestController.getAll());
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
-                break;
+                break;*/
             case "delete":
                 int id = getId(request);
                 log.info("Delete {}", id);
@@ -78,8 +75,7 @@ public class MealServlet extends HttpServlet {
                 request.getRequestDispatcher("/mealForm.jsp").forward(request, response);
                 break;
             case "update":
-                int id2 = getId(request);
-                final Meal meal = mealRestController.get(id2);
+                final Meal meal = mealRestController.get(getId(request));
                 request.setAttribute("meal", meal);
                 request.getRequestDispatcher("/mealForm.jsp").forward(request, response);
                 break;
@@ -90,12 +86,12 @@ public class MealServlet extends HttpServlet {
                 String fromTime = request.getParameter("fromTime");
                 String toTime = request.getParameter("toTime");
 
-                LocalDate fromLocalDate = fromDate.isEmpty() ? LocalDate.MIN : LocalDate.parse(fromDate);
+                /*LocalDate fromLocalDate = fromDate.isEmpty() ? LocalDate.MIN : LocalDate.parse(fromDate);
                 LocalDate toLocalDate = toDate.isEmpty() ? LocalDate.MAX : LocalDate.parse(toDate);
                 LocalTime fromLocalTime = fromTime.isEmpty() ? LocalTime.MIN : LocalTime.parse(fromTime);
-                LocalTime toLocalTime = toTime.isEmpty() ? LocalTime.MAX : LocalTime.parse(toTime);
+                LocalTime toLocalTime = toTime.isEmpty() ? LocalTime.MAX : LocalTime.parse(toTime);*/
 
-                request.setAttribute("meals", mealRestController.getAllByDateAndTime(fromLocalDate, toLocalDate, fromLocalTime, toLocalTime));
+                request.setAttribute("meals", mealRestController.getAllByDateAndTime(fromDate, toDate, fromTime, toTime));
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;
             case "all":
@@ -109,7 +105,7 @@ public class MealServlet extends HttpServlet {
 
     @Override
     public void destroy() {
-        super.destroy();
+        appCtx.close();
     }
 
     private int getId(HttpServletRequest request) {

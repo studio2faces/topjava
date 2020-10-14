@@ -1,11 +1,13 @@
 package ru.javawebinar.topjava.repository.inmemory;
 
 import org.slf4j.Logger;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.MealsUtil;
 
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -69,6 +71,13 @@ public class InMemoryMealRepository implements MealRepository {
         return repository.values().stream()
                 .filter(meal -> meal.getUserId() == userId)
                 .sorted(Comparator.comparing(Meal::getDateTime).reversed())
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Meal> getFilteredByDate(int userId, LocalDate startDate, LocalDate endDate) {
+        return MealsUtil.getFilteredMeals(repository.values(), startDate, endDate).stream()
+                .filter(meal -> meal.getUserId() == userId)
                 .collect(Collectors.toList());
     }
 }

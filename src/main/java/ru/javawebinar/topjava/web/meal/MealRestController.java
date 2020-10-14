@@ -29,11 +29,16 @@ public class MealRestController {
         return service.getAllTo(SecurityUtil.authUserId(), SecurityUtil.authUserCaloriesPerDay());
     }
 
-    //Отдать свою еду, отфильтрованную по startDate, startTime, endDate, endTime
-    public List<MealTo> getAllByDateAndTime(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime) {
+    public List<MealTo> getAllByDateAndTime(String startDate, String endDate, String startTime, String endTime) {
         log.info("filter by date and time");
-        List<Meal> meals = MealsUtil.getFilteredMeals(service.getAll(SecurityUtil.authUserId()), startDate, endDate);
-        return MealsUtil.getFilteredTos(meals, SecurityUtil.authUserCaloriesPerDay(), startTime, endTime);
+
+        LocalDate startLocalDate = startDate.isEmpty() ? LocalDate.MIN : LocalDate.parse(startDate);
+        LocalDate endLocalDate = endDate.isEmpty() ? LocalDate.MAX : LocalDate.parse(endDate);
+        LocalTime startLocalTime = startTime.isEmpty() ? LocalTime.MIN : LocalTime.parse(startTime);
+        LocalTime endLocalTime = endTime.isEmpty() ? LocalTime.MAX : LocalTime.parse(endTime);
+
+        List<Meal> meals = service.getFilteredByDate(SecurityUtil.authUserId(), startLocalDate, endLocalDate);
+        return MealsUtil.getFilteredTos(meals, SecurityUtil.authUserCaloriesPerDay(), startLocalTime, endLocalTime);
     }
 
     public Meal get(int id) {
