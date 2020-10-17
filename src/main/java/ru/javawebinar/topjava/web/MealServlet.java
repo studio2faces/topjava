@@ -105,7 +105,6 @@ public class MealServlet extends HttpServlet {
                     endLocalTime = null;
                 }
 
-
                 request.setAttribute("meals", mealRestController.getAllByDateAndTime(startLocalDate, endLocalDate, startLocalTime, endLocalTime));
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;

@@ -7,9 +7,6 @@ import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.MealsUtil;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.time.format.DateTimeParseException;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -71,34 +68,19 @@ public class InMemoryMealRepository implements MealRepository {
     @Override
     public List<Meal> getAll(int userId) {
         log.info("Get all for user id={}", userId);
-        return repository.values().stream()
-                .filter(meal -> meal.getUserId() == userId)
-                .sorted(Comparator.comparing(Meal::getDateTime).reversed())
-                .collect(Collectors.toList());
+        return getFilteredByUserIdAndSortedByDateTime(userId);
     }
 
     @Override
     public List<Meal> getFilteredByDate(int userId, LocalDate startDate, LocalDate endDate) {
-        return MealsUtil.getFilteredMeals(repository.values(), startDate, endDate).stream()
-                .filter(meal -> meal.getUserId() == userId)
-                .collect(Collectors.toList());
+        log.info("Use filter by date for user id={}", userId);
+        return MealsUtil.getFilteredMeals(getFilteredByUserIdAndSortedByDateTime(userId), startDate, endDate);
     }
 
-    public static void main(String[] args) {
-       /* MealRepository mealRepository = new InMemoryMealRepository();
-        mealRepository.save(new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500), 1);
-        Meal meal = mealRepository.get(1, 1);
-        meal.setId(100);
-
-        System.out.println(mealRepository.save(meal, 1));*/
-
-        String s = "";
-        LocalDate date;
-        try {
-            date = LocalDate.parse(s);
-        } catch (DateTimeParseException e) {
-            date = null;
-        }
-        System.out.println(date);
+    private List<Meal> getFilteredByUserIdAndSortedByDateTime(int userId) {
+        return repository.values().stream()
+                .filter(meal -> meal.getUserId() == userId)
+                .sorted(Comparator.comparing(Meal::getDateTime).reversed())
+                .collect(Collectors.toList());
     }
 }
