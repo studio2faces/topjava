@@ -13,14 +13,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 public class MealServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(MealServlet.class);
 
-    ConfigurableApplicationContext appCtx;
+    private ConfigurableApplicationContext appCtx;
     private MealRestController mealRestController;
 
     @Override
@@ -38,7 +41,7 @@ public class MealServlet extends HttpServlet {
                 LocalDateTime.parse(request.getParameter("dateTime")),
                 request.getParameter("description"),
                 Integer.parseInt(request.getParameter("calories")),
-                SecurityUtil.authUserId());
+                null);
 
         log.info(meal.isNew() ? "Create {}" : "Update {}", meal);
 
@@ -73,12 +76,37 @@ public class MealServlet extends HttpServlet {
                 break;
             case "filter":
                 log.info("filter");
-                String fromDate = request.getParameter("fromDate");
-                String toDate = request.getParameter("toDate");
-                String fromTime = request.getParameter("fromTime");
-                String toTime = request.getParameter("toTime");
 
-                request.setAttribute("meals", mealRestController.getAllByDateAndTime(fromDate, toDate, fromTime, toTime));
+                LocalDate startLocalDate;
+                try {
+                    startLocalDate = LocalDate.parse(request.getParameter("fromDate"));
+                } catch (DateTimeParseException e) {
+                    startLocalDate = null;
+                }
+
+                LocalDate endLocalDate;
+                try {
+                    endLocalDate = LocalDate.parse(request.getParameter("toDate"));
+                } catch (DateTimeParseException e) {
+                    endLocalDate = null;
+                }
+
+                LocalTime startLocalTime;
+                try {
+                    startLocalTime = LocalTime.parse(request.getParameter("fromTime"));
+                } catch (DateTimeParseException e) {
+                    startLocalTime = null;
+                }
+
+                LocalTime endLocalTime;
+                try {
+                    endLocalTime = LocalTime.parse(request.getParameter("toTime"));
+                } catch (Exception e) {
+                    endLocalTime = null;
+                }
+
+
+                request.setAttribute("meals", mealRestController.getAllByDateAndTime(startLocalDate, endLocalDate, startLocalTime, endLocalTime));
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;
             case "all":

@@ -7,6 +7,9 @@ import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.MealsUtil;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.format.DateTimeParseException;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +28,7 @@ public class InMemoryMealRepository implements MealRepository {
 
     {
         MealsUtil.meals.forEach(meal -> save(meal, 1));
+        MealsUtil.meals2.forEach(meal -> save(meal, 2));
     }
 
     @Override
@@ -38,17 +42,17 @@ public class InMemoryMealRepository implements MealRepository {
         }
         // handle case: update, but not present in storage
         Meal mealToUpdate = repository.get(meal.getId());
-        if (mealToUpdate.getUserId() == userId) {
-            return repository.computeIfPresent(meal.getId(), (id, oldMeal) -> meal);
-        } else
+        if (mealToUpdate == null || mealToUpdate.getUserId() != userId) {
             return null;
+        }
+        return repository.computeIfPresent(meal.getId(), (id, oldMeal) -> meal);
     }
 
     @Override
     public boolean delete(int id, int userId) {
         log.info("Delete meal id={}, user id={}", id, userId);
         Meal meal = repository.get(id);
-        if (meal.getUserId() != userId) {
+        if (meal == null || meal.getUserId() != userId) {
             return false;
         }
         return repository.remove(id) != null;
@@ -58,7 +62,7 @@ public class InMemoryMealRepository implements MealRepository {
     public Meal get(int id, int userId) {
         log.info("Get meal id={}, user id={}", id, userId);
         Meal meal = repository.get(id);
-        if (meal.getUserId() != userId) {
+        if (meal == null || meal.getUserId() != userId) {
             return null;
         }
         return meal;
@@ -78,5 +82,23 @@ public class InMemoryMealRepository implements MealRepository {
         return MealsUtil.getFilteredMeals(repository.values(), startDate, endDate).stream()
                 .filter(meal -> meal.getUserId() == userId)
                 .collect(Collectors.toList());
+    }
+
+    public static void main(String[] args) {
+       /* MealRepository mealRepository = new InMemoryMealRepository();
+        mealRepository.save(new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500), 1);
+        Meal meal = mealRepository.get(1, 1);
+        meal.setId(100);
+
+        System.out.println(mealRepository.save(meal, 1));*/
+
+        String s = "";
+        LocalDate date;
+        try {
+            date = LocalDate.parse(s);
+        } catch (DateTimeParseException e) {
+            date = null;
+        }
+        System.out.println(date);
     }
 }

@@ -38,10 +38,10 @@
                 <td>До времени (исключая)</td>
             </tr>
             <tr>
-                <td><input type="date" value="" name="fromDate"></td>
-                <td><input type="date" value="" name="toDate"></td>
-                <td><input type="time" value="" name="fromTime"></td>
-                <td><input type="time" value="" name="toTime"></td>
+                <td><input type="date" value="${param.get("fromDate")}" name="fromDate"></td>
+                <td><input type="date" value="${param.get("toDate")}" name="toDate"></td>
+                <td><input type="time" value="${param.get("fromTime")}" name="fromTime"></td>
+                <td><input type="time" value="${param.get("toTime")}" name="toTime"></td>
             </tr>
         </table>
         <button type="button"><a href="meals">Cancel</a></button>
@@ -70,7 +70,7 @@
                         <%--${fn:replace(meal.dateTime, 'T', ' ')}--%>
                         ${fn:formatDateTime(meal.dateTime)}
                 </td>
-                <td>${meal.description}</td>
+                <td>U${meal.userId} ${meal.description}</td>
                 <td>${meal.calories}</td>
                 <td><a href="meals?action=update&id=${meal.id}">Update</a></td>
                 <td><a href="meals?action=delete&id=${meal.id}">Delete</a></td>
