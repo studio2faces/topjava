@@ -1,5 +1,6 @@
 package ru.javawebinar.topjava.web;
 
+import com.sun.xml.internal.ws.api.model.wsdl.WSDLOutput;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.util.StringUtils;
