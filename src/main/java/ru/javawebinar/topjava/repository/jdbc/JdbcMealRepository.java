@@ -1,6 +1,5 @@
 package ru.javawebinar.topjava.repository.jdbc;
 
-import com.sun.xml.internal.ws.api.model.wsdl.WSDLOutput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 
-import java.rmi.MarshalException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -45,7 +43,6 @@ public class JdbcMealRepository implements MealRepository {
                 .addValue("description", meal.getDescription())
                 .addValue("calories", meal.getCalories())
                 .addValue("user_id", userId);
-
 
         if (meal.isNew()) {
             Number newKey = insertMeal.executeAndReturnKey(mapSqlParameterSource);

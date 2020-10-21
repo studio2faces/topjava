@@ -14,6 +14,8 @@ import ru.javawebinar.topjava.UserTestData;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
 
 import static ru.javawebinar.topjava.MealTestData.*;
@@ -31,39 +33,41 @@ public class MealServiceTest extends TestCase {
     private MealService service;
 
     @Test
-    public void testGet() {
+    public void get() {
         Meal meal = service.get(MEAL_ID, UserTestData.USER_ID);
         MealTestData.assertMatch(meal, meal1);
     }
 
     @Test
-    public void testGetNotFound() {
+    public void getNotFound() {
         Assert.assertThrows(NotFoundException.class, () -> service.get(MEAL_ID, UserTestData.NOT_FOUND));
     }
 
     @Test
-    public void testDelete() {
+    public void delete() {
         service.delete(MEAL_ID, UserTestData.USER_ID);
         Assert.assertThrows(NotFoundException.class, () -> service.get(MEAL_ID, UserTestData.USER_ID));
     }
 
     @Test
-    public void testDeleteNotFound() {
+    public void deleteNotFound() {
         Assert.assertThrows(NotFoundException.class, () -> service.delete(MEAL_ID, UserTestData.NOT_FOUND));
     }
 
     @Test
-    public void testGetBetweenInclusive() {
+    public void getBetweenInclusive() {
+        List<Meal> actual = service.getBetweenInclusive(LocalDate.of(2020, Month.JANUARY, 31), LocalDate.of(2020, Month.JANUARY, 31), UserTestData.ADMIN_ID);
+        MealTestData.assertMatch(actual, mealsOfAdminBetweenInclusive);
     }
 
     @Test
-    public void testGetAll() {
+    public void getAll() {
         List<Meal> actual = service.getAll(UserTestData.USER_ID);
-        MealTestData.assertMatch(actual, meal3, meal2, meal1);
+        MealTestData.assertMatch(actual, mealsOfUser);
     }
 
     @Test
-    public void testUpdate() {
+    public void update() {
         Meal updated = MealTestData.getUpdated();
         service.update(updated, USER_ID);
         Meal actual = service.get(updated.getId(), USER_ID);
@@ -71,13 +75,13 @@ public class MealServiceTest extends TestCase {
     }
 
     @Test
-    public void testUpdateNotFound(){
+    public void updateNotFound(){
         Meal updated = MealTestData.getUpdated();
         Assert.assertThrows(NotFoundException.class, () -> service.update(updated, UserTestData.NOT_FOUND));
     }
 
     @Test
-    public void testCreate() {
+    public void create() {
         Meal newMeal = getNew();
         Meal created = service.create(newMeal, UserTestData.USER_ID);
         Integer newId = created.getId();
