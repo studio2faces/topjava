@@ -41,4 +41,9 @@ public class DataJpaUserRepository implements UserRepository {
     public List<User> getAll() {
         return crudRepository.findAll(SORT_NAME_EMAIL);
     }
+
+    //p.7 - начала делать, но скорее всего это неверно
+    public User getWithMeal(int id) {
+        return crudRepository.getWithMeal(id);
+    }
 }
