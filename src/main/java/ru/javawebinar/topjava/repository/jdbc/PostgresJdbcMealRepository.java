@@ -22,5 +22,4 @@ public class PostgresJdbcMealRepository extends JdbcMealRepository {
     LocalDateTime convertDate(LocalDateTime localDateTime) {
         return localDateTime;
     }
-
 }

@@ -17,8 +17,7 @@ public class SpringMain {
 
     public static void main(String[] args) {
 
-        try {
-            ClassPathXmlApplicationContext appCtx = new ClassPathXmlApplicationContext();
+        try (ClassPathXmlApplicationContext appCtx = new ClassPathXmlApplicationContext()) {
             appCtx.getEnvironment().setActiveProfiles(Profiles.DATAJPA, Profiles.getActiveDbProfile());
             appCtx.setConfigLocations("spring/spring-app.xml", "spring/spring-db.xml");
             appCtx.refresh();
@@ -36,8 +35,8 @@ public class SpringMain {
             filteredMealsWithExcess.forEach(System.out::println);
             System.out.println();
             System.out.println(mealController.getBetween(null, null, null, null));
-        } catch (Exception e) {
-            System.out.println(e);
         }
+
+
     }
 }
