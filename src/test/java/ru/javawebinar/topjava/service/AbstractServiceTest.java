@@ -37,6 +37,8 @@ public abstract class AbstractServiceTest {
             String result = String.format("\n%-25s %7d", description.getMethodName(), TimeUnit.NANOSECONDS.toMillis(nanos));
             results.append(result);
             log.info(result + " ms\n");
+
+            results.setLength(0);
         }
     };
 
@@ -47,5 +49,6 @@ public abstract class AbstractServiceTest {
                 "\n---------------------------------" +
                 results +
                 "\n---------------------------------");
+    //    results.setLength(0);
     }
 }

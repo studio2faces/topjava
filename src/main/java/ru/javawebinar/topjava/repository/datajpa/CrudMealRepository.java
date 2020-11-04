@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.model.User;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,13 +15,13 @@ import java.util.List;
 public interface CrudMealRepository extends JpaRepository<Meal, Integer> {
     @Transactional
     @Modifying
-    int deleteByIdAndUserId(int id, int userId);
+    int deleteByIdAndUser(int id, User user);
 
     @Transactional
     @Modifying
     Meal save(Meal meal);
 
-    Meal getByIdAndUserId(int id, int userId);
+    Meal getByIdAndUser(int id, User user);
 
     List<Meal> getAllByUserIdOrderByDateTimeDesc(int userId);
 
@@ -29,5 +30,5 @@ public interface CrudMealRepository extends JpaRepository<Meal, Integer> {
                                   @Param("endDateTime") LocalDateTime endDateTime,
                                   @Param("userId") int userId);
 
-    boolean existsByIdAndUserId(int id, int userId);
+    boolean existsByIdAndUser(int id, User user);
 }
