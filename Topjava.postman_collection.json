@@ -1,0 +1,105 @@
+{
+	"info": {
+		"_postman_id": "b8b1831f-0b94-4e3c-bbce-b2371d17bfa3",
+		"name": "Topjava",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Meals - getAll()",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/topjava/rest/meals",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"topjava",
+						"rest",
+						"meals"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Meals - get()",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/topjava/rest/meals/100004",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"topjava",
+						"rest",
+						"meals",
+						"100004"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Meals - createWithLocation()",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/topjava/rest/meals",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"topjava",
+						"rest",
+						"meals"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Meals - delete()",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Meals - update()",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 100004,\r\n    \"dateTime\": \"2020-01-30T20:00:00\",\r\n    \"description\": \"Supper\",\r\n    \"calories\": 1000,\r\n    \"user\": null\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
