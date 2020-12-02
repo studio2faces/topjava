@@ -37,6 +37,7 @@ function updateTable() {
     });
 }
 
+
 function save() {
     $.ajax({
         type: "POST",
@@ -48,9 +49,6 @@ function save() {
         successNoty("Saved");
     });
 }
-
-
-
 
 var failedNote;
 

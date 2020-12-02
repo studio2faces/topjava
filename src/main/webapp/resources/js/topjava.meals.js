@@ -35,7 +35,7 @@ $(function () {
     };
     makeEditable();
 
-    $('#filter').submit(function(){
+    $('#filter').submit(function () {
         updateFilteredTable();
         return false;
     });
@@ -46,12 +46,17 @@ function updateFilteredTable() {
         type: "GET",
         url: "ajax/profile/meals/filter",
         data: $("#filter").serialize()
-    }).done(function () {
-      //  updateTable();
+    }).done(function (data) {
+        updateData(data);
         successNoty("Table is filtered.")
     })
 }
 
 function clearFilter() {
     $('#filter')[0].reset();
+    updateTable();
+}
+
+function updateData(data) {
+    ctx.datatableApi.clear().rows.add(data).draw();
 }
