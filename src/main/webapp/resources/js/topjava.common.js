@@ -49,20 +49,8 @@ function save() {
     });
 }
 
-function clearFilter() {
-    $('#filter')[0].reset();
-}
 
-function updateFilteredTable() {
-    $.ajax({
-        type: "GET",
-        url: "ajax/profile/meals/filter",
-        data: $("#filter").serialize()
-    }).done(function () {
-        updateTable();
-        successNoty("Table is filtered.")
-    })
-}
+
 
 var failedNote;
 
