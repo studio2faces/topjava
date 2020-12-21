@@ -1,11 +1,14 @@
 package ru.javawebinar.topjava.util;
 
+import org.slf4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import ru.javawebinar.topjava.HasId;
+import ru.javawebinar.topjava.util.exception.ErrorType;
 import ru.javawebinar.topjava.util.exception.IllegalRequestDataException;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.*;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -85,4 +88,34 @@ public class ValidationUtil {
                         .collect(Collectors.joining("<br>"))
         );
     }*/
+
+    public static String getMessage(Throwable throwable) {
+        return throwable.getLocalizedMessage() != null ? throwable.getLocalizedMessage() : throwable.getClass().getName();
+    }
+
+    public static Throwable logAndGetRootCause(Logger logger, HttpServletRequest request, Exception e, boolean logStackTrace, ErrorType errorType) {
+        Throwable rootCause = ValidationUtil.getRootCause(e);
+        if (logStackTrace) {
+            logger.error(errorType + " at request " + request.getRequestURL(), rootCause);
+        } else {
+            logger.warn("{} at request {}: {}", errorType, request.getRequestURL(), rootCause.toString());
+        }
+        return rootCause;
+    }
+
+   /* public static String getMessage(Throwable e) {
+        return e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getClass().getName();
+    }
+
+    public static Throwable logAndGetRootCause(Logger log, HttpServletRequest req, Exception e, boolean logStackTrace, ErrorType errorType) {
+        Throwable rootCause = ValidationUtil.getRootCause(e);
+        if (logStackTrace) {
+            log.error(errorType + " at request " + req.getRequestURL(), rootCause);
+        } else {
+            log.warn("{} at request  {}: {}", errorType, req.getRequestURL(), rootCause.toString());
+        }
+        return rootCause;
+    }*/
+
+
 }
